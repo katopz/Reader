@@ -34,7 +34,7 @@
 @optional // Delegate protocols
 
 - (void)dismissReaderViewController:(ReaderViewController *)viewController;
-
+- (void)takeNote:(UIView*)view position:(CGPoint)position;
 @end
 
 @interface ReaderViewController : UIViewController

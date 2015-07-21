@@ -384,7 +384,29 @@
 	contentViews = [NSMutableDictionary new]; lastHideTime = [NSDate date];
 
 	minimumPage = 1; maximumPage = [document.pageCount integerValue];
+    
+    // TODO : Real Annotations Menu
+    
+    UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPress:)];
+    [self.view addGestureRecognizer:longPress];
 }
+
+#pragma mark - Annotations methods
+- (void)longPress:(UILongPressGestureRecognizer*)gestureRecognizer {
+    if ( gestureRecognizer.state == UIGestureRecognizerStateEnded ) {
+        NSLog(@"Long Press");
+        
+        // current page
+        NSNumber *key = [NSNumber numberWithInteger:currentPage]; // Page number key
+        ReaderContentView *targetView = [contentViews objectForKey:key]; // View
+
+        // take note
+        CGPoint position = [gestureRecognizer locationInView:gestureRecognizer.view];
+        [delegate takeNote:targetView position:position];
+    }
+}
+
+#pragma mark - View
 
 - (void)viewWillAppear:(BOOL)animated
 {
@@ -700,7 +722,7 @@
 			CGRect areaRect = CGRectInset(self.view.bounds, TAP_AREA_SIZE, TAP_AREA_SIZE);
 
 			if (CGRectContainsPoint(areaRect, point) == false) return;
-		}
+        }
 
 		[mainToolbar hideToolbar]; [mainPagebar hidePagebar]; // Hide
 
